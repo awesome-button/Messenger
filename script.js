@@ -1,19 +1,28 @@
-const startMess = "Hi there, what's up?";
-const compMessages = ["Exciting!", "How about a coffee tomorrow?", "I saw Jessy yesterday", "It's not my business but thanks for sharing", "No way!", "Can't wait to see you"];
 const input = document.getElementById("input");
 const messbox = document.querySelector(".messBox");
 
 (function initialize() {
-    createMessage(startMess, "Computer");
+    createMessage("Hi there, what's up?", "Computer");
     input.addEventListener("keyup", () => {
         if (event.keyCode === 13) {
             createMessage(input.value, "You");
+            updateScroll();
             emptyTextfield();
-            let random = compMessages[Math.floor(Math.random() * compMessages.length)];
-            createMessage(random, "Computer");
+            computerTyping();
+            setTimeout(() => {
+                removeTyping();
+                createMessage(randomMess(), "Computer");
+                updateScroll();
+            }, 1700);
         }
     });
 })();
+
+function randomMess() {
+    const compMessages = ["Exciting!", "How about a coffee tomorrow?", "I saw Emma yesterday", "Nice weather today!", "I am really tired of corona talk haha", "Can't wait to see you"];
+    let random = compMessages[Math.floor(Math.random() * compMessages.length)];
+    return random;
+}
 
 function createMessage(text, sender) {
     const bubble = document.createElement("div");
@@ -41,4 +50,19 @@ function createMessage(text, sender) {
 
 function emptyTextfield() {
     input.value = "";
+}
+
+function computerTyping() {
+    const p = document.createElement('p');
+    p.setAttribute("class", "typing");
+    p.innerText = "Computer is typing...";
+    messbox.appendChild(p);
+}
+
+function removeTyping() {
+    messbox.removeChild(messbox.lastChild);
+}
+
+function updateScroll() {
+    messbox.scrollTop = messbox.scrollHeight;
 }

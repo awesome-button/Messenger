@@ -26,6 +26,7 @@ h1 {
     flex: 6;
     display: flex;
     flex-flow: column;
+    padding: 30px;
 }
 
 #input {
@@ -71,3 +72,7 @@ h1 {
     font-weight: 100;
 }
 
+.typing {
+    color: grey;
+    text-align: center;
+}
