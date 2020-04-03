@@ -2,16 +2,38 @@ const input = document.getElementById("input");
 const messbox = document.querySelector(".messBox");
 
 (function initialize() {
-    createMessage("Hi there, what's up?", "Computer");
+    let counter = localStorage.getItem('counter');
+    if (!localStorage.getItem('counter')) {
+        localStorage.setItem('counter', 0);
+    }
+
+    let firstMes = "Hi there, what's up?";
+    localStorage.setItem('mess 0', firstMes);
+    createMessage(firstMes, "Computer");
+    counter++;
+    localStorage.setItem('counter', counter);
+    
+    for (let i = 1; i < counter - 1; i++) {
+        let message = localStorage.getItem(`mess ${i}`);
+        i % 2 === 0 ? createMessage(message, "Computer") : createMessage(message, "You");
+    }
+    
     input.addEventListener("keyup", () => {
         if (event.keyCode === 13) {
+            localStorage.setItem(`mess ${counter}`, input.value);
+            counter++;
+            localStorage.setItem('counter', counter);
             createMessage(input.value, "You");
             updateScroll();
             emptyTextfield();
             computerTyping();
             setTimeout(() => {
                 removeTyping();
-                createMessage(randomMess(), "Computer");
+                let compMess = randomMess();
+                localStorage.setItem(`mess ${counter}`, compMess);
+                counter++;
+                localStorage.setItem('counter', counter);
+                createMessage(compMess, "Computer");
                 updateScroll();
             }, 1700);
         }
@@ -24,7 +46,7 @@ function randomMess() {
     return random;
 }
 
-function createMessage(text, sender) {
+function createMessage(text, sender, num) {
     const bubble = document.createElement("div");
 
     const name = document.createElement("h5");
@@ -32,6 +54,9 @@ function createMessage(text, sender) {
 
     const par = document.createElement("p");
     par.innerText = text;
+    // localStorage.setItem(`mess ${counter}`, mess);
+    // counter++;
+    // localStorage.setItem('counter');
 
     const date = document.createElement("h6");
     const hours = new Date().getHours();
